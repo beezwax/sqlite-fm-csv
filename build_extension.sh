@@ -6,6 +6,8 @@
 sqlitePath = "~/sqlite"
 csvPath = "~/csv_fm"
 
+
+
 #
 # Need to pull in a copy of SQLite for headers?
 #
@@ -26,21 +28,21 @@ fi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
 
-	clang -arch x86_64 -arch arm64 -g -I../../Support/sqlite/bld -I/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/usr/include -fPIC -dynamiclib -L../../Support/sqlite/bld -lsqlite3 fm_csv.c -o fm_csv.dylib
-	# Use our copy of sqlite, not Apple's
-	#install_name_tool -change /usr/lib/libsqlite3.dylib @loader_path./libsqlite3.al fm_csv.dylib
-	install_name_tool -change /usr/lib/libsqlite3.dylib @loader_path./bBox fm_csv.dylib
+	# Typically macOS SDKs are at either of these paths (version numbers may be different)
+	
+	#includesPath="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/include"
+	includePaths="/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/usr/include"
 
-	clang -arch x86_64 -arch arm64 -g -I../../Support/sqlite/bld -I/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/usr/include -fPIC -dynamiclib -L../../Support/sqlite/bld -lsqlite3 fm_csv.c -o fm_csv.dylib
-
+	clang -arch x86_64 -arch arm64 -g -I../../Support/sqlite/bld -I"$sdkIncludes" -fPIC -dynamiclib -L../../Support/sqlite/bld -lsqlite3 fm_csv.c -o fm_csv.dylib
 	# Use our copy of sqlite, not Apple's
-	#install_name_tool -change /usr/lib/libsqlite3.dylib @loader_path./libsqlite3.al fm_csv.dylib
-	install_name_tool -change /usr/lib/libsqlite3.dylib @loader_path./bBox fm_csv.dylib
+	install_name_tool -change /usr/lib/libsqlite3.dylib @loader_path./libsqlite3.al fm_csv.dylib
+	#install_name_tool -change /usr/lib/libsqlite3.dylib @loader_path./bBox fm_csv.dylib
 
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	# Linux
 	#TODO: fix for Ubuntu
-	clang -arch x86_64 -arch arm64 -g -I../../Support/sqlite/bld -I/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/usr/include -fPIC -dynamiclib -L../../Support/sqlite/bld -lsqlite3 fm_csv.c -o fm_csv.dylib
+	includesPath="/usr/include"
+	clang -g -I../../Support/sqlite/bld -I"$includes" -fPIC -dynamiclib -L../../Support/sqlite/bld -lsqlite3 fm_csv.c -o fm_csv.dylib
 fi
 
 
