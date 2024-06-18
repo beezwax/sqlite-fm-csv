@@ -1,5 +1,4 @@
 ## sqlite-fm-csv
----
 
 A SQLite extension for importing CSV (Comma Seperated Values).
 
