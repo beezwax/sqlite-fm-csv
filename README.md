@@ -11,11 +11,13 @@ The reason for the optional use of CR delimited line endings was to allow easy i
 
 The C code is very much based on the original CSV extension provided at sqlite.com.
 
+---
 ## Usage Examples
 
 Here are examples of loading and using the compiled extension assuming using `sqlite` command:
 
-```# Load the extension into sqlite
+```
+# Load the extension into sqlite
 .load ./fm_csv
 
 # Import the .csv file, using CR delimited lines, and creating a table with the column names we want.
