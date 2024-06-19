@@ -14,9 +14,11 @@ If you don't mind a small extra dependency, and are using the `sqlite` command's
 ```
 tr "my/input/file" "\r" "\n" >"my/output/file"
 ```
-One big caveat with the above -- what if there is an embeded CR character in a field? The `tr` command has no concept of CSV fields, and will chop that record into two. 
+One big caveat with the above -- what if there is an embeded CR character in a field? The `tr` command has no concept of CSV fields, and will chop the field and its record in two. 
 
-This extension will be included in version 1.04 of the bBox FileMaker plug-in as an enhancement to its `bBox_SQLiteExec` function. The plug-in is a free download available at https://beezwax.net/products/bbox.
+FileMaker CSV exports do not include headers, so you will typically need to use the `schema=` parameter to create the fields you need in SQLite.
+
+This extension will be included in version 1.04 and up of the bBox FileMaker plug-in as an enhancement to its `bBox_SQLiteExec` function. The plug-in is a free download available at https://beezwax.net/products/bbox.
 
 The C code is very much based on the original CSV extension provided at sqlite.com.
 
@@ -30,7 +32,7 @@ Here are examples of loading and using the compiled extension assuming using `sq
 .load ./fm_csv
 
 # Import the .csv file, using CR delimited lines, and creating a table with the column names we want.
-CREATE VIRTUAL TABLE examples.temp USING fm_csv(crlines=YES,filename='/private/tmp/examples.csv',schema='CREATE TABLE csv(category TEXT,create_date TEXT,enabled_t INTEGER)');
+CREATE VIRTUAL TABLE examples.temp USING fm_csv(crlines,filename='/private/tmp/examples.csv',schema='CREATE TABLE csv(category TEXT,create_date TEXT,enabled_t INTEGER)');
 ```
 
 ---
