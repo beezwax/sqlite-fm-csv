@@ -1011,34 +1011,6 @@ static sqlite3_module CsvModuleFauxWrite = {
 };
 #endif /* SQLITE_TEST */
 
-static sqlite3_module FMCsvModule = {
-  0,                       /* iVersion */
-  csvtabCreate,            /* xCreate */
-  csvtabConnect,           /* xConnect */
-  csvtabBestIndex,         /* xBestIndex */
-  csvtabDisconnect,        /* xDisconnect */
-  csvtabDisconnect,        /* xDestroy */
-  csvtabOpenFM,            /* xOpen - open a cursor to CR delimited file */
-  csvtabClose,             /* xClose - close a cursor */
-  csvtabFilter,            /* xFilter - configure scan constraints */
-  csvtabNext,              /* xNext - advance a cursor */
-  csvtabEof,               /* xEof - check for end of scan */
-  csvtabColumn,            /* xColumn - read data */
-  csvtabRowid,             /* xRowid - read data */
-  0,                       /* xUpdate */
-  0,                       /* xBegin */
-  0,                       /* xSync */
-  0,                       /* xCommit */
-  0,                       /* xRollback */
-  0,                       /* xFindMethod */
-  0,                       /* xRename */
-  0,                       /* xSavepoint */
-  0,                       /* xRelease */
-  0,                       /* xRollbackTo */
-  0,                       /* xShadowName */
-  0                        /* xIntegrity */
-};
-
 #endif /* !defined(SQLITE_OMIT_VIRTUALTABLE) */
 
 
@@ -1049,8 +1021,9 @@ __declspec(dllexport)
 ** This routine is called when the extension is loaded.  The new
 ** CSV virtual table module is registered with the calling database
 ** connection.
+** The "_" will get stripped off the name of module name, hence using "fmcsv" here.
 */
-int sqlite3_csv_init(
+int sqlite3_fmcsv_init(
   sqlite3 *db,
   char **pzErrMsg, 
   const sqlite3_api_routines *pApi
@@ -1058,7 +1031,7 @@ int sqlite3_csv_init(
 #ifndef SQLITE_OMIT_VIRTUALTABLE
   int rc;
   SQLITE_EXTENSION_INIT2(pApi);
-  rc = sqlite3_create_module(db, "csv", &CsvModule, 0);
+  rc = sqlite3_create_module(db, "fm_csv", &CsvModule, 0);
 #ifdef SQLITE_TEST
   if( rc==SQLITE_OK ){
     rc = sqlite3_create_module(db, "csv_wr", &CsvModuleFauxWrite, 0);
@@ -1072,8 +1045,8 @@ int sqlite3_csv_init(
 
 
 /*
- CREATE VIRTUAL TABLE bench USING csv(filename='/private/tmp/Bench.csv',schema='CREATE TABLE csv(f1,f2,f3,f4)');
+ CREATE VIRTUAL TABLE bench USING fmcsv(filename='/private/tmp/Bench.csv',schema='CREATE TABLE csv(f1,f2,f3,f4)');
  SELECT * FROM bench;
- CREATE VIRTUAL TABLE examples USING fm_csv(crlines=YES,filename='/private/tmp/examples.csv',schema='CREATE TABLE csv(category TEXT,create_date TEXT,enabled_t INTEGER,function_eval TEXT,f1,f2,f3,f4,f5,f6,f7)');
+ CREATE VIRTUAL TABLE examples USING fmcsv(crlines=YES,filename='/private/tmp/examples.csv',schema='CREATE TABLE csv(category TEXT,create_date TEXT,enabled_t INTEGER,function_eval TEXT,f1,f2,f3,f4,f5,f6,f7)');
  SELECT * FROM examples;
- */
+*/

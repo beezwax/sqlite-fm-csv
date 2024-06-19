@@ -18,6 +18,9 @@ One big caveat with the above -- what if there is an embeded CR character in a f
 
 FileMaker CSV exports do not include headers, so you will typically need to use the `schema=` parameter to create the fields you need in SQLite.
 
+Extensions are disabled in the macOS version of sqlite, and if you still try to load one it will trigger segmentation fault. However, sqlite can easily be built from source, and the versions in MacPorts and Brew also have 
+extensions enabled.
+
 This extension will be included in version 1.04 and up of the bBox FileMaker plug-in as an enhancement to its `bBox_SQLiteExec` function. The plug-in is a free download available at https://beezwax.net/products/bbox.
 
 The C code is very much based on the original CSV extension provided at sqlite.com.
@@ -28,7 +31,7 @@ The C code is very much based on the original CSV extension provided at sqlite.c
 Here are examples of loading and using the compiled extension assuming using `sqlite` command:
 
 ```
-# Load the extension into sqlite
+# Load the extension into sqlite.
 .load ./fm_csv
 
 # Import the .csv file, using CR delimited lines, and creating a table with the column names we want.
