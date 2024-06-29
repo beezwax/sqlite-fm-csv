@@ -18,7 +18,7 @@ One big caveat with the above -- what if there is an embeded CR character in a f
 
 FileMaker CSV exports do not include headers, so you will typically need to use the `schema=` parameter to create the fields you need in SQLite.
 
-Extensions are disabled in the macOS version of sqlite, and if you still try to load one it will trigger segmentation fault. However, sqlite can easily be built from source, and the versions in MacPorts and Brew also have 
+Extensions are disabled in the macOS version of sqlite, and if you still try to load one it will trigger a segmentation fault. However, sqlite can easily be built from source, and the versions in MacPorts and Brew also have 
 extensions enabled.
 
 This extension will be included in version 1.04 and up of the bBox FileMaker plug-in as an enhancement to its `bBox_SQLiteExec` function. The plug-in is a free download available at https://beezwax.net/products/bbox.
@@ -35,7 +35,10 @@ Here are examples of loading and using the compiled extension assuming using `sq
 .load ./fm_csv
 
 # Import the .csv file, using CR delimited lines, and creating a table with the column names we want.
-CREATE VIRTUAL TABLE examples.temp USING fm_csv(crlines,filename='/private/tmp/examples.csv',schema='CREATE TABLE csv(category TEXT,create_date TEXT,enabled_t INTEGER)');
+# Using a temp. table here, but no reason it can't be a persistent table instead.
+
+CREATE VIRTUAL TABLE temp.examples USING fm_csv(crlines,filename='/private/tmp/examples.csv',schema='CREATE TABLE csv(category TEXT,create_date 
+TEXT,enabled_t INTEGER)');
 ```
 
 ---
