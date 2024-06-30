@@ -4,8 +4,8 @@
 #	2024-06-17 simon_b: created from working script
 
 set -e
-sqlitePath = "~/sqlite"
-csvPath = "~/csv_fm"
+sqlitePath="~/sqlite"
+csvPath="~/csv_fm"
 
 
 
@@ -30,9 +30,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 	fi
 
 	# Typically macOS SDKs are at either of these paths (version numbers may be different)
-	
+	# You'll need to change to match what you have available.
 	#includesPath="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/include"
-	includePaths="/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/usr/include"
+	includePaths="/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include"
 
 	clang -arch x86_64 -arch arm64 -g -I../../Support/sqlite/bld -I"$sdkIncludes" -fPIC -dynamiclib -L../../Support/sqlite/bld -lsqlite3 fm_csv.c -o fm_csv.dylib
 	# Use our copy of sqlite, not Apple's
