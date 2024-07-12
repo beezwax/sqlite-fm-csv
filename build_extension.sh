@@ -4,9 +4,12 @@
 #	2024-06-17 simon_b: created from working script
 
 set -e
-sqlitePath="~/sqlite"
-csvPath="~/csv_fm"
+set -x
 
+sqlitePath="~/sqlite/bld"		# path to .o file to use
+sqlitePath="../../Support/sqlite/bld"
+
+csvPath="."
 
 
 #TODO: Use -DSQLITE_CORE in main sqlite build so we can staticly link in extension to sqlite binary?
@@ -34,7 +37,15 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 	#includesPath="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/include"
 	includePaths="/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include"
 
-	clang -arch x86_64 -arch arm64 -g -I../../Support/sqlite/bld -I"$sdkIncludes" -fPIC -dynamiclib -L../../Support/sqlite/bld -lsqlite3 fm_csv.c -o fm_csv.dylib
+	clang -arch x86_64 -arch arm64  \
+		-mmacosx-version-min=11.5  \
+		-g -fPIC  \
+		-I../../Support/sqlite/bld -I"$sdkIncludes"  \
+		-dynamiclib -L"$sqlitePath"  \
+		-lsqlite3  \
+		fm_csv.c  \
+		-o fm_csv.dylib
+
 	# Use our copy of sqlite, not Apple's
 	install_name_tool -change /usr/lib/libsqlite3.dylib @loader_path./libsqlite3.al fm_csv.dylib
 	#install_name_tool -change /usr/lib/libsqlite3.dylib @loader_path./bBox fm_csv.dylib

@@ -1021,9 +1021,8 @@ __declspec(dllexport)
 ** This routine is called when the extension is loaded.  The new
 ** CSV virtual table module is registered with the calling database
 ** connection.
-** The "_" will get stripped off the name of module name, hence using "fmcsv" here.
 */
-int sqlite3_fmcsv_init(
+int sqlite3_fm_csv_init(
   sqlite3 *db,
   char **pzErrMsg, 
   const sqlite3_api_routines *pApi
