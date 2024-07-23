@@ -53,13 +53,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
 	# Linux
-	#TODO: fix for Ubuntu
 	# sudo apt install libsqlite3-dev
 
 	includesPath="/usr/include"
-	clang -g -I../../Support/sqlite/bld -I"$includes" -fPIC -dynamiclib -L../../Support/sqlite/bld -lsqlite3 fm_csv.c -o fm_csv.dylib
+        clang -g -fPIC -shared -I"$includesPath" fm_csv.c -o fm_csv.so
 
 fi
-
-
 
